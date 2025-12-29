@@ -47,7 +47,7 @@ int8_t Vision_Rx_Data(uint8_t* buffer, VisionRxDataUnion *VisionRx)
     {
         return -2;
     }
-    HAL_UART_Receive_DMA(&huart2, (uint8_t *)VisionRx, sizeof(VisionRx));
+    // HAL_UART_Receive_DMA(&huart2, (uint8_t *)VisionRx->OriginData, sizeof(VisionRx->OriginData));
     return 0;
 }
 

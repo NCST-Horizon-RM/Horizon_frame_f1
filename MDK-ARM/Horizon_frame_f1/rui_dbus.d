@@ -33,4 +33,10 @@ horizon_frame_f1/rui_dbus.o: ..\User\Bsp\RUI_DBUS.c \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h \
-  ..\Core\Inc\usart.h
+  ..\Core\Inc\usart.h ..\Core\Inc\can.h ..\User\Start\inc\All_init.h \
+  ..\Core\Inc\tim.h ..\User\Bsp\inc\Vision.h ..\User\Bsp\inc\DJI_Motor.h \
+  ..\User\Bsp\inc\can_bsp.h ..\User\Algorithm\inc\controller.h \
+  D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\stdlib.h \
+  ..\User\Bsp\inc\bsp_dwt.h ..\User\Algorithm\inc\user_lib.h \
+  D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\math.h \
+  ..\User\App\inc\Gimbal_Task.h
