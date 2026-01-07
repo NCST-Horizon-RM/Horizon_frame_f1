@@ -33,6 +33,16 @@ void StartGimbalTask(void)
         //                 (float) VisionRxData.Data.isOnline,
         //                 0,
         //                 ALL_CONTAL.DWT_TIME.Gimbal_time);
+        VOFA_justfloat((float)DBUS_V_DATA.Remote.CH0_int16, 
+                        (float)ALL_MOTOR.M6020[YAW].DATA.Angle_Infinite / 8192.0f * 360.0f,
+                        (float)ALL_MOTOR.M6020[PITCH].DATA.Angle_Infinite / 8192.0f * 360.0f,
+                        (float)ALL_MOTOR.M6020[PITCH].DATA.Speed_now/60.0f*360.0f,
+                        (float)ALL_MOTOR.M6020[YAW].DATA.Speed_now/60.0f*360.0f,
+                        (float)VisionRxData.Data.PitchAngle,
+                        (float)VisionRxData.Data.YawAngle,
+                        ALL_CONTAL.DWT_TIME.Monitor_dt,
+                        (float) VisionRxData.Data.isOnline,
+                        0);
         Vision_Tx_Data(&ALL_MOTOR);
         gimbal_task(&ALL_CONTAL, &ALL_MOTOR);
         RobotTask(3, &DBUS_V_DATA, &ALL_CONTAL);  // 3 自瞄 2 遥控
