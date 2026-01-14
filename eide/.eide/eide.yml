@@ -82,6 +82,7 @@ virtualFolder:
       files:
         - path: ../User/Algorithm/pid_temp.c
         - path: ../User/Algorithm/controller.c
+        - path: ../User/Algorithm/exPid.c
       folders: []
     - name: App
       files:
@@ -126,8 +127,7 @@ targets:
         - .cmsis/include
         - ../MDK-ARM/RTE/_Horizon_frame_f1
       libList: []
-    excludeList:
-      - <virtual_root>/Bsp/CANSPI.c
+    excludeList: []
     toolchain: AC6
     toolchainConfigMap:
       AC5:

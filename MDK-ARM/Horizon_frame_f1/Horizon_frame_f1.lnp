@@ -41,6 +41,7 @@
 "horizon_frame_f1\irqn.o"
 "horizon_frame_f1\pid_temp.o"
 "horizon_frame_f1\controller.o"
+"horizon_frame_f1\expid.o"
 "horizon_frame_f1\gimbal_task.o"
 "horizon_frame_f1\robot.o"
 "horizon_frame_f1\bsp_dwt.o"

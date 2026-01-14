@@ -624,6 +624,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\Algorithm\controller.c</FilePath>
             </File>
+            <File>
+              <FileName>exPid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Algorithm\exPid.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
