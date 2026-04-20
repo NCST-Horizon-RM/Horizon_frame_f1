@@ -36,44 +36,7 @@
 #endif
 #endif
 
-/******************************** FUZZY PID **********************************/
-#define NB -3
-#define NM -2
-#define NS -1
-#define ZE 0
-#define PS 1
-#define PM 2
-#define PB 3
 
-typedef struct __packed
-{
-    float KpFuzzy;
-    float KiFuzzy;
-    float KdFuzzy;
-
-    float (*FuzzyRuleKp)[7];
-    float (*FuzzyRuleKi)[7];
-    float (*FuzzyRuleKd)[7];
-
-    float KpRatio;
-    float KiRatio;
-    float KdRatio;
-
-    float eStep;
-    float ecStep;
-
-    float e;
-    float ec;
-    float eLast;
-
-    uint32_t DWT_CNT;
-    float dt;
-} FuzzyRule_t;
-
-void Fuzzy_Rule_Init(FuzzyRule_t *fuzzyRule, float (*fuzzyRuleKp)[7], float (*fuzzyRuleKi)[7], float (*fuzzyRuleKd)[7],
-                     float kpRatio, float kiRatio, float kdRatio,
-                     float eStep, float ecStep);
-void Fuzzy_Rule_Implementation(FuzzyRule_t *fuzzyRule, float measure, float ref);
 
 /******************************* PID CONTROL *********************************/
 typedef enum pid_Improvement_e
@@ -134,8 +97,6 @@ typedef struct __packed pid_t
 
     uint32_t DWT_CNT;
     float dt;
-
-    FuzzyRule_t *FuzzyRule;
 
     uint8_t Improve;
 

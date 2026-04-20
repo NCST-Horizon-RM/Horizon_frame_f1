@@ -63,103 +63,6 @@
  */
 #include "controller.h"
 
-/******************************** FUZZY PID **********************************/
-static float FuzzyRuleKpRAW[7][7] = {
-    PB, PB, PM, PM, PS, ZE, ZE,
-    PB, PB, PM, PS, PS, ZE, PS,
-    PM, PM, PM, PS, ZE, PS, PS,
-    PM, PM, PS, ZE, PS, PM, PM,
-    PS, PS, ZE, PS, PS, PM, PM,
-    PS, ZE, PS, PM, PM, PM, PB,
-    ZE, ZE, PM, PM, PM, PB, PB};
-
-static float FuzzyRuleKiRAW[7][7] = {
-    PB, PB, PM, PM, PS, ZE, ZE,
-    PB, PB, PM, PS, PS, ZE, ZE,
-    PB, PM, PM, PS, ZE, PS, PS,
-    PM, PM, PS, ZE, PS, PM, PM,
-    PS, PS, ZE, PS, PS, PM, PB,
-    ZE, ZE, PS, PS, PM, PB, PB,
-    ZE, ZE, PS, PM, PM, PB, PB};
-
-static float FuzzyRuleKdRAW[7][7] = {
-    PS, PS, PB, PB, PB, PM, PS,
-    PS, PS, PB, PM, PM, PS, ZE,
-    ZE, PS, PM, PM, PS, PS, ZE,
-    ZE, PS, PS, PS, PS, PS, ZE,
-    ZE, ZE, ZE, ZE, ZE, ZE, ZE,
-    PB, PS, PS, PS, PS, PS, PB,
-    PB, PM, PM, PM, PS, PS, PB};
-
-void Fuzzy_Rule_Init(FuzzyRule_t *fuzzyRule, float (*fuzzyRuleKp)[7], float (*fuzzyRuleKi)[7], float (*fuzzyRuleKd)[7],
-                     float kpRatio, float kiRatio, float kdRatio,
-                     float eStep, float ecStep)
-{
-    if (fuzzyRuleKp == NULL)
-        fuzzyRule->FuzzyRuleKp = FuzzyRuleKpRAW;
-    else
-        fuzzyRule->FuzzyRuleKp = fuzzyRuleKp;
-    if (fuzzyRuleKi == NULL)
-        fuzzyRule->FuzzyRuleKi = FuzzyRuleKiRAW;
-    else
-        fuzzyRule->FuzzyRuleKi = fuzzyRuleKi;
-    if (fuzzyRuleKd == NULL)
-        fuzzyRule->FuzzyRuleKd = FuzzyRuleKdRAW;
-    else
-        fuzzyRule->FuzzyRuleKd = fuzzyRuleKd;
-
-    fuzzyRule->KpRatio = kpRatio;
-    fuzzyRule->KiRatio = kiRatio;
-    fuzzyRule->KdRatio = kdRatio;
-
-    if (eStep < 0.00001f)
-        eStep = 1;
-    if (ecStep < 0.00001f)
-        ecStep = 1;
-    fuzzyRule->eStep = eStep;
-    fuzzyRule->ecStep = ecStep;
-}
-void Fuzzy_Rule_Implementation(FuzzyRule_t *fuzzyRule, float measure, float ref)
-{
-    float eLeftTemp, ecLeftTemp;
-    float eRightTemp, ecRightTemp;
-    int eLeftIndex, ecLeftIndex;
-    int eRightIndex, ecRightIndex;
-
-    fuzzyRule->dt = DWT_GetDeltaT((void *)fuzzyRule->DWT_CNT);
-
-    fuzzyRule->e = ref - measure;
-    fuzzyRule->ec = (fuzzyRule->e - fuzzyRule->eLast) / fuzzyRule->dt;
-    fuzzyRule->eLast = fuzzyRule->e;
-
-    //隶属区间
-    eLeftIndex = fuzzyRule->e >= 3 * fuzzyRule->eStep ? 6 : (fuzzyRule->e <= -3 * fuzzyRule->eStep ? 0 : (fuzzyRule->e >= 0 ? ((int)(fuzzyRule->e / fuzzyRule->eStep) + 3) : ((int)(fuzzyRule->e / fuzzyRule->eStep) + 2)));
-    eRightIndex = fuzzyRule->e >= 3 * fuzzyRule->eStep ? 6 : (fuzzyRule->e <= -3 * fuzzyRule->eStep ? 0 : (fuzzyRule->e >= 0 ? ((int)(fuzzyRule->e / fuzzyRule->eStep) + 4) : ((int)(fuzzyRule->e / fuzzyRule->eStep) + 3)));
-    ecLeftIndex = fuzzyRule->ec >= 3 * fuzzyRule->ecStep ? 6 : (fuzzyRule->ec <= -3 * fuzzyRule->ecStep ? 0 : (fuzzyRule->ec >= 0 ? ((int)(fuzzyRule->ec / fuzzyRule->ecStep) + 3) : ((int)(fuzzyRule->ec / fuzzyRule->ecStep) + 2)));
-    ecRightIndex = fuzzyRule->ec >= 3 * fuzzyRule->ecStep ? 6 : (fuzzyRule->ec <= -3 * fuzzyRule->ecStep ? 0 : (fuzzyRule->ec >= 0 ? ((int)(fuzzyRule->ec / fuzzyRule->ecStep) + 4) : ((int)(fuzzyRule->ec / fuzzyRule->ecStep) + 3)));
-
-    //隶属度
-    eLeftTemp = fuzzyRule->e >= 3 * fuzzyRule->eStep ? 0 : (fuzzyRule->e <= -3 * fuzzyRule->eStep ? 1 : (eRightIndex - fuzzyRule->e / fuzzyRule->eStep - 3));
-    eRightTemp = fuzzyRule->e >= 3 * fuzzyRule->eStep ? 1 : (fuzzyRule->e <= -3 * fuzzyRule->eStep ? 0 : (fuzzyRule->e / fuzzyRule->eStep - eLeftIndex + 3));
-    ecLeftTemp = fuzzyRule->ec >= 3 * fuzzyRule->ecStep ? 0 : (fuzzyRule->ec <= -3 * fuzzyRule->ecStep ? 1 : (ecRightIndex - fuzzyRule->ec / fuzzyRule->ecStep - 3));
-    ecRightTemp = fuzzyRule->ec >= 3 * fuzzyRule->ecStep ? 1 : (fuzzyRule->ec <= -3 * fuzzyRule->ecStep ? 0 : (fuzzyRule->ec / fuzzyRule->ecStep - ecLeftIndex + 3));
-
-    fuzzyRule->KpFuzzy = eLeftTemp * ecLeftTemp * fuzzyRule->FuzzyRuleKp[eLeftIndex][ecLeftIndex] +
-                         eLeftTemp * ecRightTemp * fuzzyRule->FuzzyRuleKp[eRightIndex][ecLeftIndex] +
-                         eRightTemp * ecLeftTemp * fuzzyRule->FuzzyRuleKp[eLeftIndex][ecRightIndex] +
-                         eRightTemp * ecRightTemp * fuzzyRule->FuzzyRuleKp[eRightIndex][ecRightIndex];
-
-    fuzzyRule->KiFuzzy = eLeftTemp * ecLeftTemp * fuzzyRule->FuzzyRuleKi[eLeftIndex][ecLeftIndex] +
-                         eLeftTemp * ecRightTemp * fuzzyRule->FuzzyRuleKi[eRightIndex][ecLeftIndex] +
-                         eRightTemp * ecLeftTemp * fuzzyRule->FuzzyRuleKi[eLeftIndex][ecRightIndex] +
-                         eRightTemp * ecRightTemp * fuzzyRule->FuzzyRuleKi[eRightIndex][ecRightIndex];
-
-    fuzzyRule->KdFuzzy = eLeftTemp * ecLeftTemp * fuzzyRule->FuzzyRuleKd[eLeftIndex][ecLeftIndex] +
-                         eLeftTemp * ecRightTemp * fuzzyRule->FuzzyRuleKd[eRightIndex][ecLeftIndex] +
-                         eRightTemp * ecLeftTemp * fuzzyRule->FuzzyRuleKd[eLeftIndex][ecRightIndex] +
-                         eRightTemp * ecRightTemp * fuzzyRule->FuzzyRuleKd[eRightIndex][ecRightIndex];
-}
-
 /******************************* PID CONTROL *********************************/
 // PID优化环节函数声明
 static void f_Trapezoid_Intergral(PID_t *pid);
@@ -256,13 +159,11 @@ float PID_Calculate(PID_t *pid, float measure, float ref)
 
     if (pid->User_Func1_f != NULL)
         pid->User_Func1_f(pid);
+    
+    pid->Pout = pid->Kp * pid->Err;
+    pid->ITerm = pid->Ki * pid->Err * pid->dt;
+    pid->Dout = pid->Kd * (pid->Err - pid->Last_Err) / pid->dt;
 
-    if (pid->FuzzyRule == NULL)
-    {
-        pid->Pout = pid->Kp * pid->Err;
-        pid->ITerm = pid->Ki * pid->Err * pid->dt;
-        pid->Dout = pid->Kd * (pid->Err - pid->Last_Err) / pid->dt;
-    }
 
     if (pid->User_Func2_f != NULL)
         pid->User_Func2_f(pid);
@@ -307,10 +208,7 @@ float PID_Calculate(PID_t *pid, float measure, float ref)
 
 static void f_Trapezoid_Intergral(PID_t *pid)
 {
-    if (pid->FuzzyRule == NULL)
-        pid->ITerm = pid->Ki * ((pid->Err + pid->Last_Err) / 2) * pid->dt;
-    else
-        pid->ITerm = (pid->Ki + pid->FuzzyRule->KiFuzzy) * ((pid->Err + pid->Last_Err) / 2) * pid->dt;
+    pid->ITerm = pid->Ki * ((pid->Err + pid->Last_Err) / 2) * pid->dt;
 }
 
 static void f_Changing_Integration_Rate(PID_t *pid)
@@ -357,14 +255,7 @@ static void f_Integral_Limit(PID_t *pid)
 
 static void f_Derivative_On_Measurement(PID_t *pid)
 {
-    if (pid->FuzzyRule == NULL)
-    {
-        pid->Dout = pid->Kd * (pid->Last_Measure - pid->Measure) / pid->dt;
-    }
-    else
-    {
-        pid->Dout = (pid->Kd + pid->FuzzyRule->KdFuzzy) * (pid->Last_Measure - pid->Measure) / pid->dt;
-    }
+    pid->Dout = pid->Kd * (pid->Last_Measure - pid->Measure) / pid->dt;
 }
 
 static void f_Derivative_Filter(PID_t *pid)
