@@ -97,6 +97,7 @@ virtualFolder:
         - path: ../User/Bsp/RUI_DBUS.c
         - path: ../User/Bsp/Vision.c
         - path: ../User/Bsp/VOFA.c
+        - path: ../User/Bsp/LK_Motor.c
       folders: []
     - name: ::CMSIS
       files: []

@@ -40,11 +40,6 @@ typedef struct
     PID_t PID_S;
 }DJI_MOTOR_Typedef;
 
-typedef struct 
-{
-    DJI_MOTOR_Typedef M3508[4];
-    DJI_MOTOR_Typedef M6020[2];
-}MOTOR_Typedef;
 
 typedef struct
 {

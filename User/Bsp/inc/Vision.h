@@ -4,6 +4,7 @@
 #include "main.h"
 #include "usart.h"
 #include "DJI_Motor.h"
+#include "LK_Motor.h"
 
 typedef union
 {

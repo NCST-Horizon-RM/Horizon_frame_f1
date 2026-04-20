@@ -2,6 +2,7 @@
 #include "controller.h"
 #include "All_init.h"
 #include "MY_Define.h"
+#include "LK_Motor.h"
 
 uint8_t MOTOR_PID_Gimbal_INIT(MOTOR_Typedef *motor)
 {
@@ -50,6 +51,12 @@ uint8_t gimbal_task(CONTAL_Typedef *CONTAL, MOTOR_Typedef *MOTOR)
     MOTOR->M6020[PITCH].DATA.Aim = CONTAL->HEAD.Pitch;
     MOTOR->M6020[YAW].DATA.Aim   = CONTAL->HEAD.Yaw;
 
+
+    #ifdef LK_MOTOR
+    LKMF_Data_Read(&hcan,2);
+    LKMF_Data_Read(&hcan,1);
+    #endif
+
     PID_Calculate(&MOTOR->M6020[PITCH].PID_P, 
                    MOTOR->M6020[PITCH].DATA.Angle_Infinite,
                    MOTOR->M6020[PITCH].DATA.Aim);
@@ -63,17 +70,19 @@ uint8_t gimbal_task(CONTAL_Typedef *CONTAL, MOTOR_Typedef *MOTOR)
     PID_Calculate(&MOTOR->M6020[YAW].PID_S,
                    MOTOR->M6020[YAW].DATA.Speed_now,
                    MOTOR->M6020[YAW].PID_P.Output);
-    
+    #ifndef LK_MOTOR
     DJI_Current_Ctrl(&hcan, 0x1ff, 
                      (int16_t)MOTOR->M6020[YAW].PID_S.Output,
                      (int16_t)MOTOR->M6020[PITCH].PID_S.Output,
                      0,
                      0);
-    //  DJI_Current_Ctrl(&hcan, 0x1ff, 
-    //                  (int16_t)MOTOR->M6020[YAW].PID_S.Output,
-    //                  0,
-    //                  0,
-    //                  0);
+    #endif
+
+    #ifdef LK_MOTOR
+    LKMF_iq_ctrl(&hcan,1,-MOTOR->M6020[YAW].PID_S.Output);
+    LKMF_iq_ctrl(&hcan,2,-MOTOR->M6020[PITCH].PID_S.Output);
+    #endif
+
     return 0;
 }
 

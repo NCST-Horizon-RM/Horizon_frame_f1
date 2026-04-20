@@ -11,7 +11,7 @@
 #include "bsp_dwt.h"
 #include "can_bsp.h"
 #include "Gimbal_Task.h"
-
+#include "LK_Motor.h"
 
 
 extern DBUS_Typedef DBUS_V_DATA;
