@@ -50,6 +50,7 @@
 "horizon_frame_f1\rui_dbus.o"
 "horizon_frame_f1\vision.o"
 "horizon_frame_f1\vofa.o"
+"horizon_frame_f1\lk_motor.o"
 --strict --scatter "Horizon_frame_f1\Horizon_frame_f1.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

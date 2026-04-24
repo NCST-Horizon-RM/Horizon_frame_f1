@@ -65,10 +65,10 @@ void Vision_Tx_Data(MOTOR_Typedef *motor)
     uint8_t i = 0;
 
     VisionTxData.Head_frame = 0xCD;
-    VisionTxData.PitchAngle = motor->M6020[PITCH].DATA.Angle_Infinite/8192.0f*360.0f;
-    VisionTxData.YawAngle = motor->M6020[YAW].DATA.Angle_Infinite/8192.0f*360.0f;
-    VisionTxData.PitchOmega = motor->M3508[PITCH].DATA.Speed_now/60.0f*360.0f;
-    VisionTxData.YawOmega = motor->M3508[YAW].DATA.Speed_now/60.0f*360.0f;
+    VisionTxData.PitchAngle = motor->M6020_lk[PITCH].DATA.Angle_Infinite/8192.0f*360.0f;
+    VisionTxData.YawAngle = motor->M6020_lk[YAW].DATA.Angle_Infinite/8192.0f*360.0f;
+    VisionTxData.PitchOmega = motor->M6020_lk[PITCH].DATA.Speed_now/60.0f*360.0f;
+    VisionTxData.YawOmega = motor->M6020_lk[YAW].DATA.Speed_now/60.0f*360.0f;
     VisionTxData.VisionTime = ALL_CONTAL.DWT_TIME.Gimbal_time; // ms
     VisionTxData.End_frame = 0xDC;
 

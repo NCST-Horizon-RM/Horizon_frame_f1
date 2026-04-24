@@ -45,37 +45,30 @@ void LKMF_Data_Read(CAN_HandleTypeDef* hcan, uint16_t motor_id)
 	data[6] = 0x00;
 	data[7] = 0x00;
 	
-	 HAL_CAN_AddTxMessage(hcan, &tx, data, &mailbox);
+	HAL_CAN_AddTxMessage(hcan, &tx, data, &mailbox);
 }
-void LK_MotorResolve(DJI_MOTOR_Typedef *motor,uint8_t *RxMessage)
+void LK_MotorResolve(LK_MOTOR_Typedef *motor,uint8_t *RxMessage)
 {
 
-		motor->DATA.temperature = RxMessage[1];
+	motor->DATA.temperature = RxMessage[1];
+
+	motor->DATA.current = ((uint16_t)RxMessage[3] << 8 | (uint16_t)RxMessage[2]);
+
+	motor->DATA.Speed_last = motor->DATA.Speed_now;
+	motor->DATA.Speed_now     = ((uint16_t)RxMessage[5] << 8 | (uint16_t)RxMessage[4]);
 	
-		motor->DATA.current = ((uint16_t)RxMessage[3] << 8 | (uint16_t)RxMessage[2]);
-	
-		motor->DATA.Speed_last = motor->DATA.Speed_now;
-		motor->DATA.Speed_now     = ((uint16_t)RxMessage[5] << 8 | (uint16_t)RxMessage[4]);
-		
-		motor->DATA.Angle_last = motor->DATA.Angle_now;
-		motor->DATA.Angle_now     = ((uint16_t)RxMessage[7] << 8 | (uint16_t)RxMessage[6]);
-		
-//		if(motor->DATA.State)
-//		{
-			if (motor->DATA.Angle_now - motor->DATA.Angle_last < -40000) 
-			{
-				motor->DATA.Laps++;
-			}
-			else if (motor->DATA.Angle_now - motor->DATA.Angle_last > 40000) 
-			{
-				motor->DATA.Laps--;
-			}
-//			motor->data.lastConEncode = motor->data.conEncode;
-//			motor->data.conEncode     = (float) motor->DATA.Laps* 360 + (float) motor->data.rawEncode * 360 / 65536;	
-//		}
-//		else
-//		{
-//			motor->data.conEncode=(float)motor->data.rawEncode * 360 / 65536;	
-//		} 
-	
+	motor->DATA.Angle_last = motor->DATA.Angle_now;
+	motor->DATA.Angle_now     = ((uint16_t)RxMessage[7] << 8 | (uint16_t)RxMessage[6]);
+
+	if (motor->DATA.Angle_now - motor->DATA.Angle_last < -30000.0f) 
+	{
+		motor->DATA.Laps++;
+	}
+	else if (motor->DATA.Angle_now - motor->DATA.Angle_last > 30000.0f) 
+	{
+		motor->DATA.Laps--;
+	}
+	motor->DATA.Angle_last = motor->DATA.Angle_now;
+	motor->DATA.Angle_Infinite     = (float) motor->DATA.Laps* 360.0f + (float) motor->DATA.Angle_now * 360.0f / 65536.0f;	
+	motor->DATA.Angle_Infinite -= motor->DATA.Angle_init / 65536.0f * 360.0f;
 }

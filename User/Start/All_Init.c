@@ -25,8 +25,11 @@ void All_Init(void)
     __HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);//视觉串口
     HAL_UART_Receive_DMA(&huart2, (uint8_t *)VisionRxData.OriginData, sizeof(VisionRxData.OriginData));
 
-    ALL_CONTAL.HEAD.Pitch_MAX =  800.0f;
-    ALL_CONTAL.HEAD.Pitch_MIN = -800.0f;
-    ALL_CONTAL.HEAD.Yaw_Init  = (float)ALL_MOTOR.M6020[YAW].DATA.Angle_Infinite;
+    ALL_CONTAL.HEAD.Pitch_MAX =  30.0f;
+    ALL_CONTAL.HEAD.Pitch_MIN = -30.0f;
+    ALL_CONTAL.HEAD.Yaw_Init  = (float)ALL_MOTOR.M6020_lk[YAW].DATA.Angle_Infinite;
+    ALL_MOTOR.M6020_lk[PITCH].DATA.Angle_init = -18057;
+    ALL_MOTOR.M6020_lk[YAW].DATA.Angle_init = -22442;
+    
     MOTOR_PID_Gimbal_INIT(&ALL_MOTOR);
 }

@@ -31,6 +31,22 @@ virtualFolder:
                 - path: ../Core/Src/stm32f1xx_hal_msp.c
                 - path: ../Core/Src/stm32f1xx_hal_timebase_tim.c
               folders: []
+        - name: Middlewares
+          files: []
+          folders:
+            - name: FreeRTOS
+              files:
+                - path: ../Middlewares/Third_Party/FreeRTOS/Source/croutine.c
+                - path: ../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c
+                - path: ../Middlewares/Third_Party/FreeRTOS/Source/list.c
+                - path: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
+                - path: ../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c
+                - path: ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c
+                - path: ../Middlewares/Third_Party/FreeRTOS/Source/timers.c
+                - path: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c
+                - path: ../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c
+                - path: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/port.c
+              folders: []
     - name: Drivers
       files: []
       folders:
@@ -55,22 +71,6 @@ virtualFolder:
         - name: CMSIS
           files:
             - path: ../Core/Src/system_stm32f1xx.c
-          folders: []
-    - name: Middlewares
-      files: []
-      folders:
-        - name: FreeRTOS
-          files:
-            - path: ../Middlewares/Third_Party/FreeRTOS/Source/croutine.c
-            - path: ../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c
-            - path: ../Middlewares/Third_Party/FreeRTOS/Source/list.c
-            - path: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
-            - path: ../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c
-            - path: ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c
-            - path: ../Middlewares/Third_Party/FreeRTOS/Source/timers.c
-            - path: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c
-            - path: ../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c
-            - path: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/port.c
           folders: []
     - name: Start
       files:

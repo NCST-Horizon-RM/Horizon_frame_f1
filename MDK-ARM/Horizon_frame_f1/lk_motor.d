@@ -1,5 +1,7 @@
-horizon_frame_f1/stm32f1xx_it.o: ..\Core\Src\stm32f1xx_it.c \
-  ..\Core\Inc\main.h ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
+horizon_frame_f1/lk_motor.o: ..\User\Bsp\LK_Motor.c \
+  ..\User\Bsp\inc\LK_Motor.h ..\User\Start\inc\MY_define.h \
+  ..\User\Bsp\inc\can_bsp.h ..\Core\Inc\can.h ..\Core\Inc\main.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Core\Inc\stm32f1xx_hal_conf.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h \
@@ -29,14 +31,9 @@ horizon_frame_f1/stm32f1xx_it.o: ..\Core\Src\stm32f1xx_it.c \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h \
-  ..\Core\Inc\stm32f1xx_it.h ..\User\Start\inc\IRQN.h ..\Core\Inc\can.h \
-  ..\Core\Inc\usart.h ..\User\Start\inc\All_init.h ..\Core\Inc\tim.h \
-  ..\User\Bsp\inc\RUI_DBUS.h ..\User\Start\inc\MY_Define.h \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\string.h \
-  ..\Core\Inc\gpio.h ..\User\Bsp\inc\Vision.h \
-  ..\User\Bsp\inc\DJI_Motor.h ..\User\Bsp\inc\can_bsp.h \
   ..\User\Algorithm\inc\controller.h \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   ..\User\Bsp\inc\bsp_dwt.h ..\User\Algorithm\inc\user_lib.h \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\math.h \
-  ..\User\Bsp\inc\LK_Motor.h ..\User\App\inc\Gimbal_Task.h
+  ..\User\Bsp\inc\DJI_Motor.h

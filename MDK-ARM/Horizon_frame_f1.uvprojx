@@ -679,6 +679,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\Bsp\VOFA.c</FilePath>
             </File>
+            <File>
+              <FileName>LK_Motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Bsp\LK_Motor.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

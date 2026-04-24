@@ -13,17 +13,19 @@
 #include "can_bsp.h"
 #include "controller.h"
 #include "DJI_Motor.h"
+#include "main.h"
 
 typedef struct
 {
     int8_t ONLINE_JUDGE_TIME;
     int16_t Angle_last; // 上一个角度值
     int16_t Angle_now;  // 现在的角度值
+    int16_t Angle_init;
     int16_t Speed_last; // 上一个速度值
     int16_t Speed_now;  // 现在的速度值
     int16_t current;
     int8_t temperature;
-    int32_t Angle_Infinite;
+    float Angle_Infinite;
     int64_t Stuck_Time;
     uint16_t Stuck_Flag[2];
     int16_t Laps;
@@ -51,6 +53,6 @@ typedef struct
 
 void LKMF_iq_ctrl(CAN_HandleTypeDef* hcan, uint16_t motor_id, int32_t iqControl);
 void LKMF_Data_Read(CAN_HandleTypeDef* hcan, uint16_t motor_id);
-void LK_MotorResolve(DJI_MOTOR_Typedef *motor,uint8_t *RxMessage);
+void LK_MotorResolve(LK_MOTOR_Typedef *motor,uint8_t *RxMessage);
 
 #endif

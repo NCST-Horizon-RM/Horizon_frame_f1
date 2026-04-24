@@ -2,6 +2,7 @@
 #include "MY_Define.h"
 #include "All_init.h"
 #include "Vision.h"
+#include "lk_motor.h"
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
@@ -22,6 +23,16 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
         {
             MotorResolve(&ALL_MOTOR.M6020[PITCH], Data);
             MotorRoundResolve(&ALL_MOTOR.M6020[PITCH]);
+        }
+        break;
+        case (0x141 + YAW):
+        {
+            LK_MotorResolve(&ALL_MOTOR.M6020_lk[YAW], Data);
+        }
+        break;
+        case (0x141 + PITCH):
+        {
+            LK_MotorResolve(&ALL_MOTOR.M6020_lk[PITCH], Data);
         }
         break;
         }
