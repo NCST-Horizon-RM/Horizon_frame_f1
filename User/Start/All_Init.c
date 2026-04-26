@@ -1,4 +1,5 @@
 #include "All_Init.h"
+#include "cmsis_os.h"
 
 //遥控相关变量
 DBUS_UNION_Typdef DBUS_V_UNION = {0};
@@ -25,10 +26,20 @@ void All_Init(void)
     __HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);//视觉串口
     HAL_UART_Receive_DMA(&huart2, (uint8_t *)VisionRxData.OriginData, sizeof(VisionRxData.OriginData));
 
+    LKMF_iq_ctrl(&hcan,1,0);
+    LKMF_iq_ctrl(&hcan,2,0);
+    while (ALL_MOTOR.M6020_lk[PITCH].DATA.Angle_now == 0) {osDelay(1);}
+
     ALL_CONTAL.HEAD.Pitch_MAX =  30.0f;
     ALL_CONTAL.HEAD.Pitch_MIN = -30.0f;
     ALL_CONTAL.HEAD.Yaw_Init  = (float)ALL_MOTOR.M6020_lk[YAW].DATA.Angle_Infinite;
     ALL_MOTOR.M6020_lk[PITCH].DATA.Angle_init = -18057;
+    
+    if (ALL_MOTOR.M6020_lk[PITCH].DATA.Angle_now < 32768 && ALL_MOTOR.M6020_lk[PITCH].DATA.Angle_now > (32768-18057))
+    {
+        ALL_MOTOR.M6020_lk[PITCH].DATA.Laps = -1;
+    }
+    
     ALL_MOTOR.M6020_lk[YAW].DATA.Angle_init = -22442;
     
     MOTOR_PID_Gimbal_INIT(&ALL_MOTOR);

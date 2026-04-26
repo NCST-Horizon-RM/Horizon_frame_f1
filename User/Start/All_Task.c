@@ -9,7 +9,8 @@
 
 void StartDefaultTask(void)
 {
-    All_Init();
+    osDelay(50);
+
     for(;;)
     {
         HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_12);
@@ -19,6 +20,9 @@ void StartDefaultTask(void)
 
 void StartGimbalTask(void)
 {
+    // osDelay(100);
+    // while (ALL_MOTOR.M6020_lk[PITCH].DATA.Angle_now == 0) { osDelay(1); }
+    All_Init();
     for(;;)
     {
         ALL_CONTAL.DWT_TIME.Gimbal_dt = DWT_GetDeltaT(&ALL_CONTAL.DWT_TIME.Gimbal_Count);
@@ -52,7 +56,6 @@ void StartGimbalTask(void)
 
 void StartMonitorTask(void)
 {
-    //
     for(;;)
     {
         ALL_CONTAL.DWT_TIME.Monitor_dt = DWT_GetDeltaT(&ALL_CONTAL.DWT_TIME.Monitor_Count);

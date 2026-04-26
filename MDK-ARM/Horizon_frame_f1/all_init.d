@@ -39,4 +39,18 @@ horizon_frame_f1/all_init.o: ..\User\Start\All_Init.c \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   ..\User\Bsp\inc\bsp_dwt.h ..\User\Algorithm\inc\user_lib.h \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\math.h \
-  ..\User\Bsp\inc\LK_Motor.h ..\User\App\inc\Gimbal_Task.h
+  ..\User\Bsp\inc\LK_Motor.h ..\User\App\inc\Gimbal_Task.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
+  ..\Core\Inc\FreeRTOSConfig.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\deprecated_definitions.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM3\portmacro.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\timers.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h
