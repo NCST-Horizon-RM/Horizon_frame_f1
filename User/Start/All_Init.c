@@ -16,6 +16,9 @@ CONTAL_Typedef ALL_CONTAL = {0};
 MotorIdentify_t yaw_id;
 MotorIdentify_t pitch_id;
 
+LQR_t yaw_lqr;
+LQR_t pitch_lqr;
+
 void All_Init(void)
 {   
     DWT_Init(72);
@@ -51,4 +54,11 @@ void All_Init(void)
     MotorIdentify_Init(&pitch_id, 0.001f);
     MotorIdentify_SetChirp(&yaw_id, 120.0f, 0.5f, 3.0f, 20.0f);
     MotorIdentify_SetChirp(&pitch_id, 80.0f, 0.5f, 6.0f, 20.0f);
+    LQR_Init(
+        &yaw_lqr,
+          2.06973059e+01,
+           -8.51626564e+00,
+            -8.39448517e-01,
+        500.0f
+    );
 }

@@ -46,8 +46,9 @@ uint8_t Gimbal_AIM_INIT()
 
     return 0;
 }
-// #define LK_MOTOR 1
-#define IDENTIFY_TEST 1
+#define LK_MOTOR 1
+// #define IDENTIFY_TEST 1
+#define LQR_CONTROL 1
 
 uint8_t gimbal_task(CONTAL_Typedef *CONTAL, MOTOR_Typedef *MOTOR)
 {
@@ -85,31 +86,48 @@ uint8_t gimbal_task(CONTAL_Typedef *CONTAL, MOTOR_Typedef *MOTOR)
     //                  0);
     #endif
     
-   MotorIdentify_Update(
-       &yaw_id,
-       yaw_chirp,
-       MOTOR->M6020_lk[YAW].DATA.Angle_Infinite
-   );
-   MotorIdentify_Update(
-       &pitch_id,
-       pitch_chirp,
-       MOTOR->M6020_lk[PITCH].DATA.Angle_Infinite
-   );
 
     #ifdef LK_MOTOR
-    LKMF_iq_ctrl(&hcan,1,MOTOR->M6020_lk[YAW].PID_S.Output);
+    // LKMF_iq_ctrl(&hcan,1,MOTOR->M6020_lk[YAW].PID_S.Output);
     LKMF_iq_ctrl(&hcan,2,MOTOR->M6020_lk[PITCH].PID_S.Output);
+    
     // LKMF_iq_ctrl(&hcan,1,0);
     // LKMF_iq_ctrl(&hcan,2,0);
     #endif
 
     #ifdef IDENTIFY_TEST
+    MotorIdentify_Update(
+       &yaw_id,
+       yaw_chirp,
+       MOTOR->M6020_lk[YAW].DATA.Angle_Infinite
+    );
+    MotorIdentify_Update(
+       &pitch_id,
+       pitch_chirp,
+       MOTOR->M6020_lk[PITCH].DATA.Angle_Infinite
+    );
     LKMF_iq_ctrl(&hcan,1,( int16_t)yaw_chirp);
     LKMF_iq_ctrl(&hcan,2,(int16_t) 0);
     VOFA_justfloat(yaw_id.phi[0], yaw_id.phi[1], yaw_id.phi[2], yaw_id.phi[3], 
                     yaw_id.y[0],0,0,0,0,0);
     #endif
 
+    #ifdef LQR_CONTROL
+    float yaw_out;
+
+    yaw_out = LQR_Update(
+        &yaw_lqr,
+        MOTOR->M6020_lk[YAW].DATA.Aim,
+        MOTOR->M6020_lk[YAW].DATA.Angle_Infinite,
+        MOTOR->M6020_lk[YAW].DATA.Speed_now / 6.0f
+    );
+
+    LKMF_iq_ctrl(
+        &hcan,
+        1,
+        yaw_out
+    );
+    #endif
     return 0;
 }
 
