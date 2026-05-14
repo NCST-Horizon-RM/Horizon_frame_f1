@@ -3,6 +3,7 @@
 #include "All_init.h"
 #include "MY_Define.h"
 #include "LK_Motor.h"
+#include "VOFA.h"
 
 uint8_t MOTOR_PID_Gimbal_INIT(MOTOR_Typedef *motor)
 {
@@ -45,13 +46,18 @@ uint8_t Gimbal_AIM_INIT()
 
     return 0;
 }
-#define LK_MOTOR 1
+// #define LK_MOTOR 1
+#define IDENTIFY_TEST 1
 
 uint8_t gimbal_task(CONTAL_Typedef *CONTAL, MOTOR_Typedef *MOTOR)
 {
     MOTOR->M6020_lk[PITCH].DATA.Aim = CONTAL->HEAD.Pitch;
     MOTOR->M6020_lk[YAW].DATA.Aim   = CONTAL->HEAD.Yaw;
 
+    #ifdef IDENTIFY_TEST
+    float yaw_chirp = MotorIdentify_Chirp(&yaw_id);
+    float pitch_chirp = MotorIdentify_Chirp(&pitch_id);
+    #endif
 
     #ifdef LK_MOTOR
     // LKMF_Data_Read(&hcan,2);
@@ -72,18 +78,36 @@ uint8_t gimbal_task(CONTAL_Typedef *CONTAL, MOTOR_Typedef *MOTOR)
                    MOTOR->M6020_lk[YAW].DATA.Speed_now,
                    MOTOR->M6020_lk[YAW].PID_P.Output);
     #ifndef LK_MOTOR
-    DJI_Current_Ctrl(&hcan, 0x1ff, 
-                     (int16_t)MOTOR->M6020[YAW].PID_S.Output,
-                     (int16_t)MOTOR->M6020[PITCH].PID_S.Output,
-                     0,
-                     0);
+    // DJI_Current_Ctrl(&hcan, 0x1ff, 
+    //                  (int16_t)MOTOR->M6020[YAW].PID_S.Output,
+    //                  (int16_t)MOTOR->M6020[PITCH].PID_S.Output,
+    //                  0,
+    //                  0);
     #endif
+    
+   MotorIdentify_Update(
+       &yaw_id,
+       yaw_chirp,
+       MOTOR->M6020_lk[YAW].DATA.Angle_Infinite
+   );
+   MotorIdentify_Update(
+       &pitch_id,
+       pitch_chirp,
+       MOTOR->M6020_lk[PITCH].DATA.Angle_Infinite
+   );
 
     #ifdef LK_MOTOR
     LKMF_iq_ctrl(&hcan,1,MOTOR->M6020_lk[YAW].PID_S.Output);
     LKMF_iq_ctrl(&hcan,2,MOTOR->M6020_lk[PITCH].PID_S.Output);
     // LKMF_iq_ctrl(&hcan,1,0);
     // LKMF_iq_ctrl(&hcan,2,0);
+    #endif
+
+    #ifdef IDENTIFY_TEST
+    LKMF_iq_ctrl(&hcan,1,( int16_t)yaw_chirp);
+    LKMF_iq_ctrl(&hcan,2,(int16_t) 0);
+    VOFA_justfloat(yaw_id.phi[0], yaw_id.phi[1], yaw_id.phi[2], yaw_id.phi[3], 
+                    yaw_id.y[0],0,0,0,0,0);
     #endif
 
     return 0;

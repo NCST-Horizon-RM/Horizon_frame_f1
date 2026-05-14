@@ -55,4 +55,4 @@ horizon_frame_f1/all_task.o: ..\User\Start\All_Task.c \
   ..\User\Bsp\inc\bsp_dwt.h ..\User\Algorithm\inc\user_lib.h \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\math.h \
   ..\User\Bsp\inc\LK_Motor.h ..\User\App\inc\Gimbal_Task.h \
-  ..\User\App\inc\Robot.h
+  ..\User\Algorithm\inc\MotorIdentify.h ..\User\App\inc\Robot.h

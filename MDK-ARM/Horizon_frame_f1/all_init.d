@@ -40,6 +40,7 @@ horizon_frame_f1/all_init.o: ..\User\Start\All_Init.c \
   ..\User\Bsp\inc\bsp_dwt.h ..\User\Algorithm\inc\user_lib.h \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\math.h \
   ..\User\Bsp\inc\LK_Motor.h ..\User\App\inc\Gimbal_Task.h \
+  ..\User\Algorithm\inc\MotorIdentify.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \

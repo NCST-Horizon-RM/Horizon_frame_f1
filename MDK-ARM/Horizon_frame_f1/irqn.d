@@ -39,4 +39,5 @@ horizon_frame_f1/irqn.o: ..\User\Start\IRQN.c ..\User\Start\inc\IRQN.h \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   ..\User\Bsp\inc\bsp_dwt.h ..\User\Algorithm\inc\user_lib.h \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\math.h \
-  ..\User\Bsp\inc\LK_Motor.h ..\User\App\inc\Gimbal_Task.h
+  ..\User\Bsp\inc\LK_Motor.h ..\User\App\inc\Gimbal_Task.h \
+  ..\User\Algorithm\inc\MotorIdentify.h

@@ -39,4 +39,4 @@ horizon_frame_f1/vision.o: ..\User\Bsp\Vision.c ..\User\Bsp\inc\Vision.h \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\math.h \
   ..\User\Bsp\inc\LK_Motor.h ..\User\Start\inc\All_init.h \
   ..\Core\Inc\tim.h ..\User\Bsp\inc\RUI_DBUS.h ..\Core\Inc\gpio.h \
-  ..\User\App\inc\Gimbal_Task.h
+  ..\User\App\inc\Gimbal_Task.h ..\User\Algorithm\inc\MotorIdentify.h

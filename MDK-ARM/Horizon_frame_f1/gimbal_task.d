@@ -39,4 +39,5 @@ horizon_frame_f1/gimbal_task.o: ..\User\App\Gimbal_Task.c \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   ..\User\Bsp\inc\bsp_dwt.h ..\User\Algorithm\inc\user_lib.h \
   D:\RoboMaster\SoftWare\MDK537\ARM\ARMCLANG\Bin\..\include\math.h \
-  ..\User\Bsp\inc\LK_Motor.h
+  ..\User\Bsp\inc\LK_Motor.h ..\User\Algorithm\inc\MotorIdentify.h \
+  ..\User\Bsp\inc\VOFA.h
