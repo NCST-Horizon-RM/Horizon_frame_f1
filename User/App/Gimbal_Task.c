@@ -6,7 +6,7 @@
 
 uint8_t MOTOR_PID_Gimbal_INIT(MOTOR_Typedef *motor)
 {
-    float PID_P_Pitch[3] = {100.0f, 0.001f, 0.0f};
+    float PID_P_Pitch[3] = {80.0f, 0.001f, 0.0f};
     float PID_S_Pitch[3] = {1.5f, 0.0f, 0.0f};
 
     PID_Init(&motor->M6020_lk[PITCH].PID_P, 400.0f, 10.0f, 
@@ -22,7 +22,7 @@ uint8_t MOTOR_PID_Gimbal_INIT(MOTOR_Typedef *motor)
               Trapezoid_Intergral|ChangingIntegrationRate|
               Derivative_On_Measurement|DerivativeFilter);
     
-    float PID_P_Yaw[3] = {100.0f, 0.003f, 0.0f};
+    float PID_P_Yaw[3] = {80.0f, 0.003f, 1.0f};
     float PID_S_Yaw[3] = {2.5f, 0.0f, 0.0f};
 
     PID_Init(&motor->M6020_lk[YAW].PID_P, 400.0f, 10.0f, 
