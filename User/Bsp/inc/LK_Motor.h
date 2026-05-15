@@ -44,7 +44,7 @@ typedef struct
 typedef struct 
 {
     DJI_MOTOR_Typedef M3508[4];
-    DJI_MOTOR_Typedef M6020[2];
+    DJI_MOTOR_Typedef M6020[4];
     LK_MOTOR_Typedef M6020_lk[2];
 }MOTOR_Typedef;
 

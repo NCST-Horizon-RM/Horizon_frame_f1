@@ -83,6 +83,8 @@ virtualFolder:
         - path: ../User/Algorithm/pid_temp.c
         - path: ../User/Algorithm/controller.c
         - path: ../User/Algorithm/exPid.c
+        - path: ../User/Algorithm/lqr_controller.c
+        - path: ../User/Algorithm/MotorIdentify.c
       folders: []
     - name: App
       files:

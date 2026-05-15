@@ -3,6 +3,7 @@
 #include "All_init.h"
 #include "MY_Define.h"
 #include "LK_Motor.h"
+#include "VOFA.h"
 
 uint8_t MOTOR_PID_Gimbal_INIT(MOTOR_Typedef *motor)
 {
@@ -46,6 +47,9 @@ uint8_t Gimbal_AIM_INIT()
     return 0;
 }
 
+// #define IDENTIFY_TEST 1
+// #define LQR_CONTROL 1
+
 uint8_t gimbal_task(CONTAL_Typedef *CONTAL, MOTOR_Typedef *MOTOR)
 {
     MOTOR->M6020[PITCH].DATA.Aim = CONTAL->HEAD.Pitch;
@@ -71,7 +75,7 @@ uint8_t gimbal_task(CONTAL_Typedef *CONTAL, MOTOR_Typedef *MOTOR)
                    MOTOR->M6020[YAW].DATA.Speed_now,
                    MOTOR->M6020[YAW].PID_P.Output);
     #ifndef LK_MOTOR
-    DJI_Current_Ctrl(&hcan, 0x1ff, 
+    DJI_Current_Ctrl(&hcan, 0x1fe, 
                      (int16_t)MOTOR->M6020[YAW].PID_S.Output,
                      (int16_t)MOTOR->M6020[PITCH].PID_S.Output,
                      0,
@@ -81,6 +85,45 @@ uint8_t gimbal_task(CONTAL_Typedef *CONTAL, MOTOR_Typedef *MOTOR)
     #ifdef LK_MOTOR
     LKMF_iq_ctrl(&hcan,1,-MOTOR->M6020[YAW].PID_S.Output);
     LKMF_iq_ctrl(&hcan,2,-MOTOR->M6020[PITCH].PID_S.Output);
+    #endif
+
+    #ifdef IDENTIFY_TEST
+    float yaw_chirp = MotorIdentify_Chirp(&yaw_id);
+    float pitch_chirp = MotorIdentify_Chirp(&pitch_id);
+    
+    MotorIdentify_Update(
+       &yaw_id,
+       yaw_chirp,
+       MOTOR->M6020[YAW].DATA.Angle_Infinite
+    );
+    MotorIdentify_Update(
+       &pitch_id,
+       pitch_chirp,
+       MOTOR->M6020[PITCH].DATA.Angle_Infinite
+    );
+    DJI_Current_Ctrl(&hcan, 0x1fe, 
+                     (int16_t)yaw_chirp,
+                     (int16_t)0,
+                     0,
+                     0);
+    VOFA_justfloat(yaw_id.phi[0], yaw_id.phi[1], yaw_id.phi[2], yaw_id.phi[3], 
+                    yaw_id.y[0],0,0,0,0,0);
+    #endif
+
+    #ifdef LQR_CONTROL
+
+    yaw_out = LQR_Update(
+        &yaw_lqr,
+        MOTOR->M6020[YAW].DATA.Aim,
+        MOTOR->M6020[YAW].DATA.Angle_Infinite,
+        MOTOR->M6020[YAW].DATA.Speed_now / 60.0f * 8192.0f
+    );
+
+    DJI_Current_Ctrl(&hcan, 0x1fe, 
+                     (int16_t)yaw_out,
+                     (int16_t)0,
+                     0,
+                     0);
     #endif
 
     return 0;

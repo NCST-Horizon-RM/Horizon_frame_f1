@@ -629,6 +629,16 @@
               <FileType>1</FileType>
               <FilePath>..\User\Algorithm\exPid.c</FilePath>
             </File>
+            <File>
+              <FileName>lqr_controller.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Algorithm\lqr_controller.c</FilePath>
+            </File>
+            <File>
+              <FileName>MotorIdentify.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Algorithm\MotorIdentify.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
